@@ -1,6 +1,7 @@
 package com.ieunji.book.springboot.web;
 
 import com.ieunji.book.springboot.service.posts.PostsService;
+import com.ieunji.book.springboot.web.dto.PostsResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
