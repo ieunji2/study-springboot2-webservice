@@ -22,4 +22,4 @@ notifications:
     recipients:
       - eunjilee3008@gmail.com
 
-# 빌드 확인용 테스트 커밋 2
+# Travis CI 연동 확인용 커밋 3
