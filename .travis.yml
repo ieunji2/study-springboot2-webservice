@@ -16,10 +16,26 @@ cache:
 # master 브랜치에 푸시되었을 때 실행할 명령어
 script: "./gradlew clean build"
 
+# deploy 명령어가 실행되기 전에 수행
+before_deploy:
+  - zip -r study-springboot2-webservice * # 현재 위치의 모든 파일을 study-springboot2-webservice 이름으로 압축(zip)
+  - mkdir -p deploy # Travis CI가 실행 중인 위치에 deploy 디렉토리 생성
+  - mv study-springboot2-webservice.zip deploy/study-springboot2-webservice.zip # deploy 디렉토리로 zip 파일 이동
+
+# 외부 서비스와 연동될 행위들을 선언 - S3로 파일 업로드, CodeDeploy로 배포 등
+deploy:
+  - provider: s3
+    access_key_id: $AWS_ACCESS_KEY # Travis repo settings에 설정된 값
+    secret_access_key: $AWS_SECRET_KEY # Travis repo settings에 설정된 값
+    bucket: study-springboot2-build # S3 버킷
+    region: ap-northeast-2
+    skip_cleanup: true
+    acl: private # zip 파일 접근을 private으로
+    local_dir: deploy # before_deploy에서 생성한 디렉토리 지정 - 해당 위치의 파일들만 S3로 전송
+    wait-until-deploy: true
+
 # CI 실행 완료 시 메일로 알람
 notifications:
   email:
     recipients:
       - eunjilee3008@gmail.com
-
-# Travis CI 연동 확인용 커밋 3
